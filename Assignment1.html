@@ -2,19 +2,35 @@
 <html>
 <body>
 
-<img id="myImage" onclick="changeImage()" src="pic_bulboff.gif" width="100" height="180">
+<h> Assignment1 PROP </h>
 
-<p>Click the light bulb to turn on/off the light.</p>
-
+<p id = output>First paragraph</p>
+<!-- document.getElementById("demo").innerHTML = cars[0]; -->
 <script>
-function changeImage() {
-    var image = document.getElementById('myImage');
-    if (image.src.match("bulbon")) {
-        image.src = "pic_bulboff.gif";
-    } else {
-        image.src = "pic_bulbon.gif";
-    }
-}
+
+	var myObject = {
+		var prototypeList = null; 
+		create(list){			
+			var obj = Object.create(myObject);
+			obj.prototypeList = list; 			
+			return obj; 
+		}		
+		call(functionNam, argumentList){
+			
+		}
+	}
+	
+	var obj1 = Object.create(null); 
+	var obj2 = Object.create(null); 
+	
+	var testObj1 = myObject.create([obj1, obj2]);
+	
+	test
+	
+	
+	
+	
+
 </script>
 
 </body>

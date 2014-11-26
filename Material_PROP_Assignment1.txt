@@ -60,6 +60,7 @@ a.unshift([item]) Prepends items to the start of the array.
 **********Array in JavaScript end**************
 
 *******Useful functions in JavaScript start*******
+------------------------------------------------
 function instanceOf(object, constructor) {
    while (object != null) {
       if (object == constructor.prototype)
@@ -71,6 +72,38 @@ function instanceOf(object, constructor) {
    }
    return false;
 }
+
+---------------------------------------------
+That's better: we are creating the method functions only once, and assigning references to them inside the constructor. Can we do any better than that? The answer is yes:
+
+function Person(first, last) {
+    this.first = first;
+    this.last = last;
+}
+Person.prototype.fullName = function() {
+    return this.first + ' ' + this.last;
+};
+Person.prototype.fullNameReversed = function() {
+    return this.last + ', ' + this.first;
+};1
+
+Person.prototype is an object shared by all instances of Person. It forms part of a lookup chain (that has a special name, "prototype chain"): any time you attempt to access a property of Person that isn't set, JavaScript will check Person.prototype to see if that property exists there instead. As a result, anything assigned to Person.prototype becomes available to all instances of that constructor via the this object.
+
+This is an incredibly powerful tool. JavaScript lets you modify something's prototype at any time in your program, which means you can add extra methods to existing objects at runtime:
+> s = new Person("Simon", "Willison");
+> s.firstNameCaps();
+TypeError on line 1: s.firstNameCaps is not a function
+> Person.prototype.firstNameCaps = function() {
+    return this.first.toUpperCase()
+};
+> s.firstNameCaps()
+SIMON
+
+-------------------------------------------------
+
+
+
+
 
 *****Useful functions in JavaScript start ******
 
