@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="demo"></p>
+
+<script>
+var cars = ["Saab", "Volvo", "BMW"];
+document.getElementById("demo").innerHTML = cars[0];
+
+
+
+function instanceOf(object, constructor) {
+   while (object != null) {
+      if (object == constructor.prototype)
+         return true;
+      if (typeof object == 'xml') {
+        return constructor.prototype == XML.prototype;
+      }
+      object = object.__proto__;
+   }
+   return false;
+}
+
+</script>
+
+</body>
+</html>
+
