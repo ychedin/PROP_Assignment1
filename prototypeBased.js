@@ -1,3 +1,5 @@
+"use strict";
+
 var myObject = {
     call: function (funcName, args) {
         var dfsResult = this.dfs(funcName, args);
@@ -10,12 +12,13 @@ var myObject = {
 
     dfs: function (funcName, args) { // helper method. Not intended to be called directly.
         var fn = this[funcName];
+		
 
         if (typeof fn === "function") {
             return fn; // Success! Stop searching.
         } else if (this.list) { // if this has a list.
             for (var i = 0; i < this.list.length; i++) { // go through the list.
-                
+                			
                 fn = this.list[i].dfs(funcName, args);
                 if (typeof fn === "function") {
                     return fn; // Success! Stop searching.
@@ -24,6 +27,23 @@ var myObject = {
         }
     }, // end of dfs()
     
+	detectCircularInheritence: function(){
+		var allSearchedPrototypesList; 
+		
+		for(var n = 0; n < this.list.length; n++){
+			for(var j = 0; j < allSearchedPrototypesList.length; i++){
+				for(var j = 0; j < allSearchedPrototypesList.length; i++){ // to detect the circular inheritence  YCH
+					if(allSearchedPrototypesList[i] == allSearchedPrototypesList[j]){
+						document.write("It's circular inheritence!");
+						return true;  
+					}else{
+						return false; 
+					}
+				}
+			}
+		}
+	}
+	
     create: function (parents) {
         var ret = Object.create(myObject);
 
@@ -90,6 +110,27 @@ function testNoSuchFunction() {
         return "func2: " + arg;
     };
     var obj3 = myObject.create([obj1, obj2]);
+
+    try {
+        var result = obj3.call("noSuchName!", ["hello"]);
+        document.write("test failed.");
+    }
+    catch (error) {
+        document.write("Success!");
+        // success??
+    }
+}
+
+function testCircularInheritenceFunction() {
+    document.write("<br>testCircularInheritenceFunction: ");
+    
+    var obj3 = myObject.create([obj5]);
+	var obj1 = myObject.create([obj3]);
+	var obj0 = myObject.create([obj1, obj2 ]);	
+	var obj2 = myObject.create([obj3,obj4]);	
+	var obj5 = myObject.create([obj2]);
+	
+    detectCircularInheritence();      
 
     try {
         var result = obj3.call("noSuchName!", ["hello"]);
