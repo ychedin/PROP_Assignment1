@@ -65,17 +65,19 @@ var myObject = {
     }  //end of isMember;
 };
 
-//testCircularInheritanceWithEightNodesFunction(); //testCase8: this case shouldn't be tested together with testCase6 and testCase7 since it throws an exceptioin
-//testCircularInheritanceWithThreeNodesFunction(); //testCase7: this case shouldn't be tested together with testCase6 and testCase8 since it throws an exceptioin
-//testCircularInheritenceWithTwoNodesFunction(); //testCase6: this case shouldn't be tested together with testCase7 and testCase8 since it throws an exceptioin
-testNoCircularInheritanceWithSixNodes(); //testCase5
+//testCircularInheritanceWithEightNodesFunction(); //testCase10: this case shouldn't be tested together with testCase6 and testCase7 since it throws an exceptioin
+//testCircularInheritanceWithThreeNodesFunction(); //testCase9: this case shouldn't be tested together with testCase6 and testCase8 since it throws an exceptioin
+//testCircularInheritenceWithTwoNodesFunction(); //testCase8: this case shouldn't be tested together with testCase7 and testCase8 since it throws an exceptioin
+testNoCircularInheritanceWithSixNodes(); //testCase7
+testNoCircularInheritanceWithThreeNodesFunction(); //testCase6
+testNoCircularInheritenceWithTwoNodesFunction(); //testCase5
 testIsMemberAndumberOfAllNodes(); //testCase4
 peterTest(); //testCase3
 testNoFuncInFirstChild(); // testCase2
 testNoSuchFunction(); // testCase1
 
 function testCircularInheritanceWithEightNodesFunction() {
-    document.write("<br>testCircularInheritanceWithFourNodesFunction: ");
+    document.write("<br>testCircularInheritanceWithEightNodesFunction: ");
     var obj0, obj1, obj2, obj3, obj4, obj5, obj6, obj7;
     
     obj0 = myObject.create([]);
@@ -126,79 +128,9 @@ function testCircularInheritanceWithEightNodesFunction() {
     
     document.write(obj0.call("func3", ["hello"]));
     
- }   
+ }  
  
-function testNoCircularInheritanceWithSixNodes(){
-    document.write("<br>testNoCircularInheritanceWithSixNodes:");
-    var obj0, obj1, obj2, obj3, obj4, obj5;
-    
-    obj0 = myObject.create([]);
-    obj1 = myObject.create([]);
-    obj2 = myObject.create([obj1]);
-    obj3 = myObject.create([obj0,obj2]);
-    obj4 = myObject.create([obj1,obj2]);
-    obj5 = myObject.create([]);
-    
-    obj0.list[0] = obj1; 
-    obj1.list[0] = obj5;
-
-   obj0.func = function (arg) {
-        return "func0: " + arg;
-    };        
-    obj1.func1 = function (arg1) {
-        return "func1: " + arg1;
-    };
-    
-    obj2.func2 = function(arg2){
-        return "func2: " + arg2;
-    }; 
-    
-    obj3.func3 = function (arg) {
-        return "func0: " + arg;
-    };
-    
-    obj4.func4 = function (arg) {
-        return "func4: " + arg;
-    };
-    
-    obj5.func9 = function (arg) {
-        return "func5: " + arg;
-    };
-     document.write(obj0.call("func9", ["hello"]));
-}
-
-
-function testIsMemberAndumberOfAllNodes(){
-    document.write("<br>testIsMember: ");
-    var obj0, obj1, obj2, obj3, obj4, obj5;
-    
-    obj0 = myObject.create([]);
-    obj1 = myObject.create([obj0]);
-    obj2 = myObject.create([obj1]);
-    obj3 = myObject.create([obj2]);
-    obj4 = myObject.create([obj2]);
-    obj5 = myObject.create([obj2]);
-    
-    obj0.list[0] = obj1; 
-
-   obj0.func = function (arg) {
-        return "func0: " + arg;
-    };        
-    obj1.func1 = function (arg1) {
-        return "func1: " + arg1;
-    };
-    
-    obj2.func2 = function(arg2){
-        return "func2: " + arg2;
-    };   
-    document.write(obj1.isMember(obj0.list));
-    document.write("<br> numberOfDecendants: ");
-    document.write(myObject.numberOfDecendants);    
-    document.write("<br>");
-    
-}
-
-function testCircularInheritanceWithThreeNodesFunction() {
+ function testCircularInheritanceWithThreeNodesFunction() {
     document.write("<br>testCircularInheritanceWithThreeNodesFunction: ");
 
     var obj0, obj1, obj2;
@@ -247,15 +179,140 @@ function testCircularInheritenceWithTwoNodesFunction() {
     
     
     obj0.call("noSucfunhName", ["hello"]);
+    document.write("<br>"); 
+}
+ 
+function testNoCircularInheritanceWithSixNodes(){
+    document.write("<br>testNoCircularInheritanceWithSixNodes:");
+    var obj0, obj1, obj2, obj3, obj4, obj5;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([]);
+    obj2 = myObject.create([obj1]);
+    obj3 = myObject.create([obj0,obj2]);
+    obj4 = myObject.create([obj1,obj2]);
+    obj5 = myObject.create([]);
+    
+    obj0.list[0] = obj1; 
+    obj1.list[0] = obj5;
+
+   obj0.func = function (arg) {
+        return "func0: " + arg;
+    };        
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function(arg2){
+        return "func2: " + arg2;
+    }; 
+    
+    obj3.func3 = function (arg) {
+        return "func0: " + arg;
+    };
+    
+    obj4.func4 = function (arg) {
+        return "func4: " + arg;
+    };
+    
+    obj5.func9 = function (arg) {
+        return "func5: " + arg;
+    };
+     document.write(obj0.call("func9", ["hello"]));
+     document.write("<br>"); 
+}
+
+function testNoCircularInheritanceWithThreeNodesFunction() {
+    document.write("<br>testCircularInheritanceWithThreeNodesFunction: ");
+
+    var obj0, obj1, obj2;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([]);
+    obj2 = myObject.create([]);  
+    
+    obj0.list[0] = obj1; 
+    obj1.list[0] = obj2; 
+    
+    obj0.func = function (arg) {       
+        return "func0: " + arg;
+    };    
+    
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function(arg2){
+        return "func2: " + arg2;
+    };
+    
+    document.write(obj0.call("func2", ["hello"])); 
+    document.write("<br>"); 
+}
+
+
+function testNoCircularInheritenceWithTwoNodesFunction() {
+    document.write("<br><b>testNoCircularInheritenceWithTwoNodesFunction: < /b>");
+
+    var obj0, obj1;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([]);
+    obj0.list[0] = obj1;
+    
+    obj0.func = function (arg) {
+        return "func0: " + arg;
+    };    
+    
+    obj1.func1 = function (arg1) {
+        arg1 = "nonsense!"; //this argument is the one which is used in the method call, intresting!
+        return "func2: " + arg1;
+    };    
+    
+    document.write(obj0.call("func1", ["hello"]));
+    document.write("<br>"); 
+}
+
+function testIsMemberAndumberOfAllNodes(){
+    document.write("<br>testIsMember: ");
+    var obj0, obj1, obj2, obj3, obj4, obj5;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([obj0]);
+    obj2 = myObject.create([obj1]);
+    obj3 = myObject.create([obj2]);
+    obj4 = myObject.create([obj2]);
+    obj5 = myObject.create([obj2]);
+    
+    obj0.list[0] = obj1; 
+
+   obj0.func = function (arg) {
+        return "func0: " + arg;
+    };        
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function(arg2){
+        return "func2: " + arg2;
+    };   
+    
+    document.write(obj1.isMember(obj0.list));
+    document.write("<br> numberOfDecendants: ");
+    document.write(myObject.numberOfDecendants);    
+    document.write("<br>");    
 }
 
 
 function peterTest() {
     document.write("<br>peterTest: ");
+    
     var obj0 = myObject.create(null);
+    
     obj0.func = function (arg) {
         return "func0: " + arg;
     };
+    
     var obj1 = myObject.create([obj0]);
 
     var obj2 = myObject.create([]);
