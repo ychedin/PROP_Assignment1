@@ -11,8 +11,7 @@ var myObject = {
     }, // end of call()
 
     dfs: function (funcName, args) { // helper method. Not intended to be called directly.
-        var fn = this[funcName];
-		
+        var fn = this[funcName];		
 
         if (typeof fn === "function") {
             return fn; // Success! Stop searching.
@@ -27,23 +26,7 @@ var myObject = {
         }
     }, // end of dfs()
     
-	detectCircularInheritence: function(){
-		var allSearchedPrototypesList; 
 		
-		for(var n = 0; n < this.list.length; n++){
-			for(var j = 0; j < allSearchedPrototypesList.length; i++){
-				for(var j = 0; j < allSearchedPrototypesList.length; i++){ // to detect the circular inheritence  YCH
-					if(allSearchedPrototypesList[i] == allSearchedPrototypesList[j]){
-						document.write("It's circular inheritence!");
-						return true;  
-					}else{
-						return false; 
-					}
-				}
-			}
-		}
-	}
-	
     create: function (parents) {
         var ret = Object.create(myObject);
 
@@ -54,11 +37,121 @@ var myObject = {
 };
 
 // tests
-
+testFunctionCallInheritanceWithFourNodesFunction();
 peterTest();
 testNoFuncInFirstChild();
 testNoSuchFunction();
 
+function testFunctionCallInheritanceWithFourNodesFunction() {
+    document.write("<br>testCircularInheritanceWithFourNodesFunction: ");
+    var obj0, obj1, obj2, obj3;
+    
+    obj0 = myObject.create([obj1]);
+    obj1 = myObject.create([obj2]);
+    obj2 = myObject.create([obj3]);
+    obj3 = myObject.create([]);
+           
+    
+    obj0.func0 = function (arg0) {
+        return "func0: " + arg0;
+    };
+    
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function (arg2) {
+        return "func2: " + arg2;
+    };
+      
+     obj3.func3 = function (arg2) {
+        return "func3: " + arg2;
+    };
+    
+    document.write(obj0.call("func3", ["hello"]));
+    
+ }   
+ 
+    
+function testIsMemberAndumberOfAllNodes(){
+    document.write("<br>testIsMember: ");
+    var obj0, obj1, obj2, obj3, obj4, obj5;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([obj0]);
+    obj2 = myObject.create([obj1]);
+    obj3 = myObject.create([obj2]);
+    obj4 = myObject.create([obj2]);
+    obj5 = myObject.create([obj2]);
+    
+    obj0.list[0] = obj1; 
+
+   obj0.func = function (arg) {
+        return "func0: " + arg;
+    };        
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function(arg2){
+        return "func2: " + arg2;
+    };   
+    document.write(obj1.isMember(obj0.list)); 
+    document.write(myObject.childrenList.length);
+    document.write("<br>");
+    
+}
+
+function testCircularInheritanceWithThreeNodesFunction() {
+    document.write("<br>testCircularInheritanceWithThreeNodesFunction: ");
+
+    var obj0, obj1, obj2;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([obj0]);
+    obj2 = myObject.create([obj1]);
+    
+   obj0.list[0] = obj1; 
+
+   obj0.func = function (arg) {
+       
+        return "func0: " + arg;
+    };    
+    
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function(arg2){
+        return "func2: " + arg2;
+    };
+    
+    obj0.call("noSuchName", ["hello"]);
+    //document.write(obj0.detectCircularInheritance(obj0, []));
+    
+}
+
+
+function testCircularInheritenceWithTwoNodesFunction() {
+    document.write("<br><b>testCircularInheritenceWithTwoNodesFunction: < /b>");
+
+    var obj0, obj1;
+    
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([obj0]);
+    obj0.list[0] = obj1; 
+
+   obj0.func = function (arg) {
+        return "func0: " + arg;
+    };    
+    
+    obj1.func1 = function (arg1) {
+        return "func2: " + arg1;
+    };
+    
+    
+    obj0.call("noSucfunhName", ["hello"]);
+}
 function peterTest() {
     document.write("peterTest: ");
     var obj0 = myObject.create(null);
