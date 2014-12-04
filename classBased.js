@@ -36,25 +36,25 @@ function createClass(className, superClassList) {
             }
         } // end of dfs()
     };
-
-    // do cycle check here!
-
     Object.defineProperty(myClass, 'className', {
         configurable: false,
         writable: false,
         value: className
     });
 
+    if (typeof superClassList === "undefined") {
+        throw "Attempting to use an undefined class as a superclass!";
+    }
+
     Object.defineProperty(myClass, 'superClassList', {
         configurable: false,
         writable: false,
         value: superClassList
     });
+
     return myClass;
 }// end of createClass
 
-
-// tests
 
 function peterTest() {
     document.write("<br>peterTest: ");
@@ -71,10 +71,10 @@ function peterTest() {
     var obj3 = class3.new();
     var result = obj3.call("func", ["hello"]);
 //where 'result' is assigned "func0: hello".
- if (result === "func0: hello"){
-     document.write("Success!<br>");
- }
-    
+    if (result === "func0: hello") {
+        document.write("Success!<br>");
+    }
+
 
 }
 
