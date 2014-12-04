@@ -30,17 +30,14 @@ var myObject = {
         numberOfFinishedLoop += 1;
         
         var maxNumberOfLoops = numberOfDecendants*numberOfDecendants;  
-        //document.write("<br>");
-        //document.write(maxNumberOfLoops);
-        //document.write("<br>");
-       // document.write(numberOfFinishedLoop);
+       
         if(numberOfDecendants === 0){
             
         }else if(numberOfFinishedLoop > maxNumberOfLoops){
-            throw endlessLoopException("There is a circular inheritence!"); 
+            throw endlessLoopException("There is a circular inheritance!"); 
         }
         
-      var fn = this[funcName];		
+		var fn = this[funcName];		
 
         if (typeof fn === "function") {
             return fn; // Success! Stop searching.
@@ -65,17 +62,17 @@ var myObject = {
            }    
         }        
         return isMember; 
-    }  
+    }  //end of isMember;
 };
 
-//testCircularInheritanceWithEightNodesFunction();
-//testCircularInheritanceWithThreeNodesFunction();
-//testCircularInheritenceWithTwoNodesFunction();
-testNoCircularInheritanceWithSixNodes(); 
-testIsMemberAndumberOfAllNodes(); 
-peterTest();
-testNoFuncInFirstChild();
-testNoSuchFunction();
+//testCircularInheritanceWithEightNodesFunction(); //testCase8: this case shouldn't be tested together with testCase6 and testCase7 since it throws an exceptioin
+//testCircularInheritanceWithThreeNodesFunction(); //testCase7: this case shouldn't be tested together with testCase6 and testCase8 since it throws an exceptioin
+//testCircularInheritenceWithTwoNodesFunction(); //testCase6: this case shouldn't be tested together with testCase7 and testCase8 since it throws an exceptioin
+testNoCircularInheritanceWithSixNodes(); //testCase5
+testIsMemberAndumberOfAllNodes(); //testCase4
+peterTest(); //testCase3
+testNoFuncInFirstChild(); // testCase2
+testNoSuchFunction(); // testCase1
 
 function testCircularInheritanceWithEightNodesFunction() {
     document.write("<br>testCircularInheritanceWithFourNodesFunction: ");
