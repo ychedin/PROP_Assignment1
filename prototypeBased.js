@@ -1,57 +1,104 @@
 "use strict";
 
-var myObject = {
+function endlessLoopException(args){
+    return args;     
+}
+
+var myObject = {   
+    numberOfDecendants: 0,
+    childrenList: [],
+    
     call: function (funcName, args) {
-        var dfsResult = this.dfs(funcName, args);
+        
+        var dfsResult = this.dfs(funcName, args, 0, 0);
         if (typeof dfsResult === "function") {
             return dfsResult(args); // actually calls the function.
         } else {
-            throw "'" + funcName + "' is not defined for the calling class.";
+            throw "'" + funcName + "' is not defined for the calling object.";
         }
-    }, // end of call()
-
-    dfs: function (funcName, args) { // helper method. Not intended to be called directly.
-        var fn = this[funcName];		
+    }, // end of call()   
+    
+     create: function (parents) { 
+        myObject.numberOfDecendants++;        
+        var newObject = Object.create(myObject);
+        newObject.list = parents;
+        return newObject;
+    },// end of create()
+    
+    dfs: function (funcName, args, numberOfFinishedLoop, numberOfDecendants) { // helper method. Not intended to be called directly.
+        numberOfDecendants = myObject.numberOfDecendants; 
+        numberOfFinishedLoop += 1;
+        
+        var maxNumberOfLoops = numberOfDecendants*numberOfDecendants;  
+        //document.write("<br>");
+        //document.write(maxNumberOfLoops);
+        //document.write("<br>");
+       // document.write(numberOfFinishedLoop);
+        if(numberOfDecendants === 0){
+            
+        }else if(numberOfFinishedLoop > maxNumberOfLoops){
+            throw endlessLoopException("There is a circular inheritence!"); 
+        }
+        
+      var fn = this[funcName];		
 
         if (typeof fn === "function") {
             return fn; // Success! Stop searching.
         } else if (this.list) { // if this has a list.
             for (var i = 0; i < this.list.length; i++) { // go through the list.
                 			
-                fn = this.list[i].dfs(funcName, args);
+                fn = this.list[i].dfs(funcName, args, numberOfFinishedLoop, numberOfDecendants);
                 if (typeof fn === "function") {
                     return fn; // Success! Stop searching.
                 }
             }
         }
-    }, // end of dfs()
-    
-		
-    create: function (parents) {
-        var ret = Object.create(myObject);
-
-        ret.list = parents;
-        return ret;
-    }// end of create()
-
+    }, // end of dfs()       
+       
+    isMember: function(prototypeList){
+        var isMember = false; 
+        if(prototypeList.length !== 0){
+           for(var i = 0; i < prototypeList.length; i++){
+               if(this === prototypeList[i]){
+                   isMember = true; 
+               }
+           }    
+        }        
+        return isMember; 
+    }  
 };
 
-// tests
-testFunctionCallInheritanceWithFourNodesFunction();
+//testCircularInheritanceWithEightNodesFunction();
+//testCircularInheritanceWithThreeNodesFunction();
+//testCircularInheritenceWithTwoNodesFunction();
+testNoCircularInheritanceWithSixNodes(); 
+testIsMemberAndumberOfAllNodes(); 
 peterTest();
 testNoFuncInFirstChild();
 testNoSuchFunction();
 
-function testFunctionCallInheritanceWithFourNodesFunction() {
+function testCircularInheritanceWithEightNodesFunction() {
     document.write("<br>testCircularInheritanceWithFourNodesFunction: ");
-    var obj0, obj1, obj2, obj3;
+    var obj0, obj1, obj2, obj3, obj4, obj5, obj6, obj7;
     
-    obj0 = myObject.create([obj1]);
-    obj1 = myObject.create([obj2]);
-    obj2 = myObject.create([obj3]);
-    obj3 = myObject.create([]);
-           
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([]);
+    obj2 = myObject.create([]);
+    obj3 = myObject.create([obj2]);
+    obj4 = myObject.create([obj1]);
+    obj5 = myObject.create([obj4]);
+    obj6 = myObject.create([]);
+    obj7 = myObject.create([]);
     
+    obj0.list[0] = obj1;
+    obj0.list[1] = obj2;
+    
+    obj1.list[0] = obj3;
+    obj2.list[0] = obj4;
+    obj3.list[0] = obj5; 
+    obj4.list[1] = obj6;
+    obj6.list[0] = obj7;
+
     obj0.func0 = function (arg0) {
         return "func0: " + arg0;
     };
@@ -64,15 +111,66 @@ function testFunctionCallInheritanceWithFourNodesFunction() {
         return "func2: " + arg2;
     };
       
-     obj3.func3 = function (arg2) {
+     obj4.func4 = function (arg2) {
         return "func3: " + arg2;
+    };
+    
+      obj5.func5 = function (arg1) {
+        return "func5: " + arg1;
+    };
+    
+    obj6.func6 = function (arg2) {
+        return "func2: " + arg2;
+    };
+      
+     obj7.func3 = function (arg2) {
+        return "func7: " + arg2;
     };
     
     document.write(obj0.call("func3", ["hello"]));
     
  }   
  
+function testNoCircularInheritanceWithSixNodes(){
+    document.write("<br>testNoCircularInheritanceWithSixNodes:");
+    var obj0, obj1, obj2, obj3, obj4, obj5;
     
+    obj0 = myObject.create([]);
+    obj1 = myObject.create([]);
+    obj2 = myObject.create([obj1]);
+    obj3 = myObject.create([obj0,obj2]);
+    obj4 = myObject.create([obj1,obj2]);
+    obj5 = myObject.create([]);
+    
+    obj0.list[0] = obj1; 
+    obj1.list[0] = obj5;
+
+   obj0.func = function (arg) {
+        return "func0: " + arg;
+    };        
+    obj1.func1 = function (arg1) {
+        return "func1: " + arg1;
+    };
+    
+    obj2.func2 = function(arg2){
+        return "func2: " + arg2;
+    }; 
+    
+    obj3.func3 = function (arg) {
+        return "func0: " + arg;
+    };
+    
+    obj4.func4 = function (arg) {
+        return "func4: " + arg;
+    };
+    
+    obj5.func9 = function (arg) {
+        return "func5: " + arg;
+    };
+     document.write(obj0.call("func9", ["hello"]));
+}
+
+
 function testIsMemberAndumberOfAllNodes(){
     document.write("<br>testIsMember: ");
     var obj0, obj1, obj2, obj3, obj4, obj5;
@@ -96,8 +194,9 @@ function testIsMemberAndumberOfAllNodes(){
     obj2.func2 = function(arg2){
         return "func2: " + arg2;
     };   
-    document.write(obj1.isMember(obj0.list)); 
-    document.write(myObject.childrenList.length);
+    document.write(obj1.isMember(obj0.list));
+    document.write("<br> numberOfDecendants: ");
+    document.write(myObject.numberOfDecendants);    
     document.write("<br>");
     
 }
@@ -152,8 +251,10 @@ function testCircularInheritenceWithTwoNodesFunction() {
     
     obj0.call("noSucfunhName", ["hello"]);
 }
+
+
 function peterTest() {
-    document.write("peterTest: ");
+    document.write("<br>peterTest: ");
     var obj0 = myObject.create(null);
     obj0.func = function (arg) {
         return "func0: " + arg;
@@ -164,12 +265,13 @@ function peterTest() {
     obj2.func = function (arg) {
         return "func2: " + arg;
     };
+    
     var obj3 = myObject.create([obj1, obj2]);
     var result = obj3.call("func", ["hello"]);
 
     if (result === "func0: hello") {
         document.write("Success! <br>");
-    }else {
+    } else {
         document.write("test failed. <br>");
     }
 }
@@ -188,7 +290,7 @@ function testNoFuncInFirstChild() {
 
     if (result === "func2: hello") {
         document.write("Success! <br>");
-    }else {
+    } else {
         document.write("test failed. <br>");
     }
 }
@@ -214,24 +316,4 @@ function testNoSuchFunction() {
     }
 }
 
-function testCircularInheritenceFunction() {
-    document.write("<br>testCircularInheritenceFunction: ");
-    
-    var obj3 = myObject.create([obj5]);
-	var obj1 = myObject.create([obj3]);
-	var obj0 = myObject.create([obj1, obj2 ]);	
-	var obj2 = myObject.create([obj3,obj4]);	
-	var obj5 = myObject.create([obj2]);
-	
-    detectCircularInheritence();      
 
-    try {
-        var result = obj3.call("noSuchName!", ["hello"]);
-        document.write("test failed.");
-    }
-    catch (error) {
-        document.write("Success!");
-        // success??
-    }
-
-}
