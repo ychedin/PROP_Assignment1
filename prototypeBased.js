@@ -6,9 +6,8 @@ function endlessLoopException(args){
 
 var myObject = {   
     numberOfDecendants: 0,
-    childrenList: [],
-    
-    call: function (funcName, args) {
+  
+	call: function (funcName, args) {
         
         var dfsResult = this.dfs(funcName, args, 0, 0);
         if (typeof dfsResult === "function") {
